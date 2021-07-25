@@ -13,7 +13,7 @@
         <button type="submit" class="btn btn-primary my-3">Submit</button>
       </div>
     </form>
-    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-3 g-2 g-lg-3">
+    <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
       <PostCard v-for="post in postsArr" :key="post.id" :info="post" />
     </div>
   </div>
@@ -43,7 +43,11 @@ export default {
         title: this.newTitle,
       })
       if (post) {
+        const id = Date.now()
+        const posts = {...this.posts}
+        posts[id] = {id, title: this.newTitle}
         this.newTitle = ''
+        this.posts = posts
       }
     },
   },

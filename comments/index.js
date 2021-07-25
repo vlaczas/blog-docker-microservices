@@ -8,11 +8,11 @@ app.use(express.json());
 
 const comments = {};
 
-app.get("/posts/:id/comments", (req, res) => {
+app.get("/api/posts/:id/comments", (req, res) => {
   res.send(comments[req.params.id] || []);
 });
 
-app.post("/posts/:id/comments", (req, res) => {
+app.post("/api/posts/:id/comments", (req, res) => {
   const commentId = randomBytes(4).toString("hex");
 
   const { content } = req.body;
@@ -27,5 +27,5 @@ app.post("/posts/:id/comments", (req, res) => {
 });
 
 app.listen(4001, () => {
-  console.log("port 4001");
+  console.log("comments 4001");
 });
