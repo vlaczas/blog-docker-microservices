@@ -14,7 +14,7 @@
       </div>
     </form>
     <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
-      <PostCard v-for="post in postsArr" :key="post.id" :info="post" />
+      <PostCard v-for="post of posts" :key="post.id" :info="post" />
     </div>
   </div>
 </template>
@@ -23,17 +23,12 @@
 export default {
   name: 'Posts',
   data: () => ({
-    posts: {},
+    posts: [],
     newTitle: '',
   }),
   async created() {
-    const posts = await this.$axios.get('/api/posts')
-    this.posts = posts.data
-  },
-  computed: {
-    postsArr() {
-      return Object.values(this.posts)
-    },
+    const posts = await this.$axios.get('http://localhost:4002/posts')
+    this.posts = Object.values(posts.data)
   },
   methods: {
     async createPost() {
@@ -42,13 +37,9 @@ export default {
       const post = await this.$axios.post('/api/posts', {
         title: this.newTitle,
       })
-      if (post) {
-        const id = Date.now()
-        const posts = {...this.posts}
-        posts[id] = {id, title: this.newTitle}
-        this.newTitle = ''
-        this.posts = posts
-      }
+      
+      this.posts.push({...post.data, comments: []})
+      this.newTitle = ''
     },
   },
 }

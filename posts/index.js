@@ -28,6 +28,12 @@ app.post('/api/posts', async (req, res) => {
   res.status(201).send(posts[id]);
 });
 
+app.post('/events', (req, res) => {
+  console.log('event', req.body.type);
+
+  res.send({})
+})
+
 app.listen(4000, () => {
   console.log('posts 4000');
 });

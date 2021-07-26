@@ -35,16 +35,15 @@ export default {
     newComment: '',
     comments: []
   }),
-  async created() {
-    const comments = await this.$axios.get(`http://localhost:4001/api/posts/${this.post.id}/comments`) 
-    this.comments = comments.data
+  created() {
+    this.comments = [...this.post.comments];
   },
   methods: {
-    createComment() {
+    async createComment() {
       if (!this.newComment) return
       try {
-        this.$axios.post(`http://localhost:4001/api/posts/${this.post.id}/comments`, {content: this.newComment})
-        this.comments.push({id: Date.now(), content: this.newComment})
+        const data = await this.$axios.post(`http://localhost:4001/api/posts/${this.post.id}/comments`, {content: this.newComment})
+        this.comments.push({id: data.data.id, content: this.newComment})
         this.newComment = ''
       } catch (error) {
         console.log(error)
